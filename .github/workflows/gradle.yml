@@ -18,9 +18,9 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - uses: actions/checkout@master
-    - name: Publish to Registry
-      uses: HurricanKai/Publish-Docker-Github-Action@master
-      with:
-        name: pikard86/mail-service
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag pikard86/mail-service:$(date +%s)
+    - name: Login to docker hub
+    - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+    - name: Push Docker image to docker hub
+      run: docker push pikard86/mail-service
